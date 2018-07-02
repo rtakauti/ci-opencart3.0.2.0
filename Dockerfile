@@ -14,7 +14,6 @@ RUN set -xe \
 
 VOLUME /var/www/html
 
-
 ENV OPENCART_URL https://github.com/opencart/opencart/archive/3.0.2.0.tar.gz
 ENV OPENCART_FILE opencart.tar.gz
 
@@ -32,7 +31,7 @@ RUN set -xe \
     && chmod -R 777 /usr/src/opencart \
     && chown -R www-data:www-data /usr/src/opencart
 
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY ./docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["apache2-foreground"]
