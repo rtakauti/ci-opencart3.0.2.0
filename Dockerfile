@@ -15,12 +15,10 @@ RUN set -xe \
 
 # Install Intl
 RUN set -xe \
-    && apt-get update \
     && apt-get install -y libicu-dev \
     && docker-php-ext-install intl
 
 RUN set -xe \
-    && apt-get update \
     && pecl config-set preferred_state beta \
     && pecl install -o -f xdebug \
     && rm -rf /tmp/pear \
@@ -42,7 +40,6 @@ RUN docker-php-ext-install mbstring
 
 # Install soap
 RUN set -xe \
-    && apt-get update \
     && apt-get install -y libxml2-dev \
     && docker-php-ext-install soap
 
@@ -54,12 +51,10 @@ RUN docker-php-ext-install zip
 
 # Install Git
 RUN set -xe \
-    && apt-get update \
     && apt-get install -y git
 
 # Install xsl
 RUN set -xe \
-    && apt-get update \
     && apt-get install -y libxslt-dev \
     && docker-php-ext-install xsl
 
@@ -74,7 +69,6 @@ RUN a2enmod rewrite
 
 # Install ssmtp Mail Transfer Agent
 RUN set -xe \
-    && apt-get update \
     && apt-get install -y ssmtp \
     && apt-get clean \
     && echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf \
@@ -82,7 +76,6 @@ RUN set -xe \
 
 # Install MySQL CLI Client
 RUN set -xe \
-    && apt-get update \
     && apt-get install -y mysql-client
 
 VOLUME /var/www/html
