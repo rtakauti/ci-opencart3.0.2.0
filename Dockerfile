@@ -6,9 +6,12 @@ RUN a2enmod rewrite expires
 # Install GD
 RUN set -xe \
     && apt-get update \
-    && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng12-dev \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd
+    && apt-get install -y libpng-dev libjpeg-dev libmcrypt-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
+    && docker-php-ext-install gd \
+    && pecl install mcrypt-1.0.1 \
+    && docker-php-ext-enable mcrypt
 
 # Install MCrypt
 RUN set -xe \
