@@ -15,16 +15,6 @@ echo "	Require all granted" >> /etc/apache2/conf-available/document-root-directo
 echo "</Directory>" >> /etc/apache2/conf-available/document-root-directory.conf
 a2enconf "document-root-directory.conf"
 
-# Configure sSMTP
-if [ "$SSMTP_MAILHUB" ]; then
-    echo "mailhub=$SSMTP_MAILHUB" >> /etc/ssmtp/ssmtp.conf
-fi;
-if [ "$SSMTP_AUTH_USER" ]; then
-    echo "AuthUser=$SSMTP_AUTH_USER" >> /etc/ssmtp/ssmtp.conf
-fi;
-if [ "$SSMTP_AUTH_PASS" ]; then
-    echo "AuthPass=$SSMTP_AUTH_PASS" >> /etc/ssmtp/ssmtp.conf
-fi;
 
 file_env() {
 	local var="$1"
