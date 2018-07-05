@@ -4,26 +4,29 @@ MAINTAINER Rubens Takauti <rtakauti@hotmail.com>
 RUN a2enmod rewrite expires
 
 # Install GD
-RUN apt-get update \
-    && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng12-dev \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd
-
-# Install MCrypt
-RUN apt-get update \
-    && apt-get install -y libmcrypt-dev \
-    && docker-php-ext-install mcrypt
+RUN set -xe \
+    && apt-get update \
+    && apt-get install -y libpng-dev libjpeg-dev libmcrypt-dev \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
+    && docker-php-ext-install gd \
+    && pecl install mcrypt-1.0.1 \
+    && docker-php-ext-enable mcrypt
 
 # Install Intl
-RUN apt-get update \
+RUN set -xe \
     && apt-get install -y libicu-dev \
     && docker-php-ext-install intl
 
-ENV XDEBUG_ENABLE 0
-RUN pecl config-set preferred_state beta \
+RUN set -xe \
+    && pecl config-set preferred_state beta \
     && pecl install -o -f xdebug \
     && rm -rf /tmp/pear \
     && pecl config-set preferred_state stable
+
+COPY ./99-xdebug.ini /usr/local/etc/php/conf.d/
+
+COPY ./999-php.ini /usr/local/etc/php/conf.d/
 
 # Install Mysql
 RUN docker-php-ext-install mysqli pdo_mysql
@@ -36,7 +39,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
 RUN docker-php-ext-install mbstring
 
 # Install soap
-RUN apt-get update \
+RUN set -xe \
     && apt-get install -y libxml2-dev \
     && docker-php-ext-install soap
 
@@ -47,11 +50,11 @@ RUN docker-php-ext-install opcache
 RUN docker-php-ext-install zip
 
 # Install Git
-RUN apt-get update \
+RUN set -xe \
     && apt-get install -y git
 
 # Install xsl
-RUN apt-get update \
+RUN set -xe \
     && apt-get install -y libxslt-dev \
     && docker-php-ext-install xsl
 
@@ -65,14 +68,14 @@ ENV APACHE_DOC_ROOT /var/www/html
 RUN a2enmod rewrite
 
 # Install ssmtp Mail Transfer Agent
-RUN apt-get update \
+RUN set -xe \
     && apt-get install -y ssmtp \
     && apt-get clean \
     && echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf \
     && echo 'sendmail_path = "/usr/sbin/ssmtp -t"' > /usr/local/etc/php/conf.d/mail.ini
 
 # Install MySQL CLI Client
-RUN apt-get update \
+RUN set -xe \
     && apt-get install -y mysql-client
 
 VOLUME /var/www/html
