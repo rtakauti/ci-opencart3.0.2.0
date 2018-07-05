@@ -19,13 +19,16 @@ RUN set -xe \
     && apt-get install -y libicu-dev \
     && docker-php-ext-install intl
 
-ENV XDEBUG_ENABLE 0
 RUN set -xe \
     && apt-get update \
     && pecl config-set preferred_state beta \
     && pecl install -o -f xdebug \
     && rm -rf /tmp/pear \
     && pecl config-set preferred_state stable
+
+COPY ./99-xdebug.ini /usr/local/etc/php/conf.d/
+
+COPY ./999-php.ini /usr/local/etc/php/conf.d/
 
 # Install Mysql
 RUN docker-php-ext-install mysqli pdo_mysql
