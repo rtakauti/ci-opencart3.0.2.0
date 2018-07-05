@@ -13,12 +13,6 @@ RUN set -xe \
     && pecl install mcrypt-1.0.1 \
     && docker-php-ext-enable mcrypt
 
-# Install MCrypt
-RUN set -xe \
-    && apt-get update \
-    && apt-get install -y libmcrypt-dev \
-    && docker-php-ext-install mcrypt
-
 # Install Intl
 RUN set -xe \
     && apt-get update \
