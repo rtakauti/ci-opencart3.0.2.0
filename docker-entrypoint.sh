@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
+
 # Configure PHP date.timezone
 echo "date.timezone = $PHP_TIMEZONE" > /usr/local/etc/php/conf.d/timezone.ini
 
