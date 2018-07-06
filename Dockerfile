@@ -26,6 +26,9 @@ RUN set -xe \
     && rm -rf /tmp/pear \
     && pecl config-set preferred_state stable
 
+RUN set -xe \
+    && docker-php-ext-enable xdebug
+
 COPY ./99-xdebug.ini /usr/local/etc/php/conf.d/
 
 COPY ./999-php.ini /usr/local/etc/php/conf.d/
