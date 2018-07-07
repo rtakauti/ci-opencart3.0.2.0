@@ -19,14 +19,13 @@ RUN set -xe \
     && apt-get install -y libicu-dev \
     && docker-php-ext-install intl
 
+# Install xdebug
 RUN set -xe \
     && apt-get update \
     && pecl config-set preferred_state beta \
     && pecl install -o -f xdebug \
     && rm -rf /tmp/pear \
-    && pecl config-set preferred_state stable
-
-RUN set -xe \
+    && pecl config-set preferred_state stable \
     && docker-php-ext-enable xdebug
 
 COPY ./99-xdebug.ini /usr/local/etc/php/conf.d/
